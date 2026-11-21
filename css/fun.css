@@ -1,0 +1,83 @@
+/* fun.css — لایه‌ی ظاهر شاد و جذاب برای مخاطب نوجوان (۱۳ تا ۱۶ سال)
+   فقط صفحه‌های عمومی این فایل را بارگذاری می‌کنند؛ پنل مدیریت (admin) بدون تغییر می‌ماند. */
+:root{--bg:#FFFAF2;--soft:#FFF0DA;--line:#f1e3cd;--shadow:0 10px 28px rgba(142,64,87,.13);
+  --sun:#FFB703;--coral:#FF6B6B;--mint:#18B8A6;--sky:#3AA7F0;--violet:#7B5CFF}
+[data-theme=dark]{--bg:#0e1626;--soft:#14203a;--line:#27365a;--shadow:0 10px 28px rgba(0,0,0,.4);
+  --sun:#FFC83D;--coral:#FF8585;--mint:#3FD6C4;--sky:#6CBBF5;--violet:#9C86FF}
+body{background-color:var(--bg);background-image:radial-gradient(color-mix(in srgb,var(--navy) 13%,transparent) 1.4px,transparent 1.7px);background-size:24px 24px;font-family:Vazirmatn,Vazir,IRANSans,Tahoma,sans-serif}
+main>section:nth-of-type(even){background:color-mix(in srgb,var(--sun) 9%,var(--bg))}
+
+/* عنوان‌ها */
+h2,.h2{font-size:1.7em;font-weight:800;padding-inline-start:0;margin-bottom:36px}
+h2::before,.h2::before{top:auto;bottom:-10px;width:64px;height:7px;border-radius:99px;background:linear-gradient(90deg,var(--sun),var(--coral),var(--violet))}
+
+/* هدر و منو */
+header{border-bottom:0;box-shadow:0 6px 22px rgba(36,59,100,.12);border-radius:0 0 26px 26px}
+header::after{content:"";position:absolute;inset-inline:0;bottom:-5px;height:5px;border-radius:0 0 26px 26px;background:linear-gradient(90deg,var(--sky),var(--mint),var(--sun),var(--coral),var(--violet))}
+nav a{border-radius:99px;padding:6px 15px;font-weight:600}
+nav a:hover,nav a[aria-current=page]{background:var(--sun);color:#2b1f00}
+
+/* دکمه‌ها */
+.btn{border-radius:99px;padding:11px 26px;font-weight:700;background:linear-gradient(135deg,var(--plum),var(--coral));box-shadow:0 8px 18px rgba(142,64,87,.28);transition:transform .18s,box-shadow .18s}
+.btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 24px rgba(142,64,87,.34);filter:none}
+.btn.alt{background:transparent;border:2px solid var(--navy);color:var(--navy);box-shadow:none}
+.btn.alt:hover{background:var(--navy);color:var(--card)}
+
+/* کارت‌ها: هر کارت یک رنگ شاد */
+.card{border-radius:22px;border:2px solid var(--line);border-top:7px solid var(--c,var(--plum));transition:transform .2s,box-shadow .2s,border-color .2s}
+.grid>.card:nth-child(5n+1){--c:var(--coral)}.grid>.card:nth-child(5n+2){--c:var(--sky)}.grid>.card:nth-child(5n+3){--c:var(--mint)}.grid>.card:nth-child(5n+4){--c:var(--sun)}.grid>.card:nth-child(5n+5){--c:var(--violet)}
+.card:hover{transform:translateY(-6px) rotate(-.6deg);box-shadow:0 16px 34px rgba(36,59,100,.18)}
+.card .cv{height:170px}
+.card .bd h3{font-weight:800}
+.tag{font-weight:700;padding:3px 14px}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.grid>.card{animation:pop .5s both}.grid>.card:nth-child(n+2){animation-delay:.08s}.grid>.card:nth-child(n+4){animation-delay:.16s}
+
+/* قهرمان صفحه‌ی اصلی */
+.hero{position:relative;overflow:hidden;padding:84px 0 120px;background:radial-gradient(circle at 12% 20%,#FFB70055,transparent 38%),radial-gradient(circle at 90% 10%,#FF6B6B66,transparent 42%),linear-gradient(135deg,#243B64 0%,#5B3A9A 58%,#8E4057 100%)}
+[data-theme=dark] .hero{background:radial-gradient(circle at 12% 20%,#FFC83D33,transparent 38%),radial-gradient(circle at 90% 10%,#9C86FF44,transparent 42%),linear-gradient(135deg,#1a2a4d,#0e1626)}
+.hero::after{content:"";position:absolute;inset-inline:0;bottom:-1px;height:70px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'><path d='M0 40 C240 95 480 0 720 36 C960 72 1200 8 1440 44 L1440 80 L0 80Z' fill='%23FFFAF2'/></svg>") bottom/100% 100% no-repeat}
+[data-theme=dark] .hero::after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'><path d='M0 40 C240 95 480 0 720 36 C960 72 1200 8 1440 44 L1440 80 L0 80Z' fill='%230e1626'/></svg>")}
+.hero .wrap{position:relative;z-index:1}
+.hero h1{font-weight:800;text-shadow:0 3px 14px #0004}
+.hero p{font-size:1.1em}
+.hero .btn{background:linear-gradient(135deg,var(--sun),#ff9a3c);color:#3a2300;box-shadow:0 8px 20px #0004;margin-inline-end:10px}
+.hero .btn.alt{background:transparent;color:#fff;border:2px solid #fff;box-shadow:none}
+.hero .btn.alt:hover{background:#fff;color:#243B64}
+.hero img.logo{border-radius:38px;border:6px solid #ffffff66;transform:rotate(-4deg);animation:bob 7s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(-4deg) translateY(-12px)}}
+.stats{flex-wrap:wrap;gap:14px}
+.stats>div{background:#ffffff22;border:1px solid #ffffff44;border-radius:20px;padding:10px 22px;backdrop-filter:blur(4px)}
+.stats b{color:var(--sun)}
+.deco{position:absolute;font-size:34px;pointer-events:none;user-select:none;animation:float 6s ease-in-out infinite}
+.d1{top:14%;inset-inline-start:5%}.d2{top:66%;inset-inline-start:46%;animation-delay:1.2s}.d3{top:12%;inset-inline-start:46%;animation-delay:2s}.d4{bottom:24%;inset-inline-end:5%;animation-delay:.6s}
+@keyframes float{50%{transform:translateY(-14px) rotate(10deg)}}
+
+/* نوار دعوت */
+.band{position:relative;overflow:hidden;padding:62px 0;background:linear-gradient(120deg,#243B64,#7B5CFF 50%,#FF6B6B)}
+.band::before,.band::after{position:absolute;font-size:54px;opacity:.4}
+.band::before{content:"🎉";inset-inline-start:8%;top:16%;transform:rotate(-14deg)}
+.band::after{content:"🚀";inset-inline-end:8%;bottom:14%;transform:rotate(10deg)}
+.band .btn{background:var(--sun);color:#3a2300}
+.band h2{font-size:2em}
+
+/* گالری، فرم، چیپ، فوتر */
+.gal-item{border-radius:18px;border:3px solid var(--card);box-shadow:var(--shadow);transition:transform .2s}
+.gal-item:hover{transform:rotate(-1.5deg) scale(1.03)}
+input,select,textarea{border:2px solid var(--line);border-radius:14px;padding:10px 14px;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--violet);box-shadow:0 0 0 4px color-mix(in srgb,var(--violet) 22%,transparent)}
+form.f{border-radius:26px;border:2px solid var(--line);border-top:8px solid var(--sun)}
+.chip{border-width:2px;font-weight:600}
+.chip[aria-pressed=true]{background:var(--plum);border-color:var(--plum);color:#fff}
+footer{border-top:0;position:relative}
+footer::before{content:"";position:absolute;inset-inline:0;top:0;height:5px;background:linear-gradient(90deg,var(--sky),var(--mint),var(--sun),var(--coral),var(--violet))}
+
+@media (max-width:760px){.deco{font-size:24px}.hero{padding:56px 0 96px}.d2,.d3{display:none}.hero .btn{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){.deco,.hero img.logo,.grid>.card{animation:none!important}}
+
+/* انیمیشن‌های مشترک موبایل و دسکتاپ (بدون hover): ورود با اسکرول و حس فشردن */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+.btn,.card,.gal-item,.pv-tab{-webkit-tap-highlight-color:transparent}
+.btn:active,.card:active,.gal-item:active{transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
