@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     <aside class="card side"><div class="bd">${tag(c.status)}
       ${row('تاریخ شروع', fmtDate(c.start))}${row('تاریخ پایان', fmtDate(c.end))}${row('مکان', c.location)}${row('ظرفیت', c.capacity)}
       ${left !== null && c.status === 'open' ? row('جای خالی', left) : ''}${row('هزینه', c.cost)}${row('مدیر اردو', c.manager)}${row('تماس', c.phone)}${row('مهلت ثبت‌نام', fmtDate(c.deadline))}
+      ${c.map_url ? `<a class="btn alt block" href="${esc(safeUrl(c.map_url))}" target="_blank" rel="noopener">${ic('pin')} نقشه و مسیریابی</a>` : ''}
       ${c.status === 'open' ? `<a class="btn block" href="${esc(U.reg(slug))}">ثبت‌نام در اردو</a>` : `<p class="muted">${esc(ST[c.status] || '')}</p>`}
     </div></aside></div>`;
   cleanStaticLinks();

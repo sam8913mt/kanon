@@ -118,7 +118,8 @@ window.DEMO = {
    ],
    "form_title": "فرم ثبت‌نام",
    "form_intro": "",
-   "registered": 12
+   "registered": 12,
+   "map_url": "https://www.openstreetmap.org/"
   },
   {
    "id": 2,
@@ -144,7 +145,8 @@ window.DEMO = {
    "fields": [],
    "form_title": "",
    "form_intro": "",
-   "registered": 0
+   "registered": 0,
+   "map_url": "https://www.openstreetmap.org/"
   },
   {
    "id": 3,
@@ -170,7 +172,8 @@ window.DEMO = {
    "fields": [],
    "form_title": "",
    "form_intro": "",
-   "registered": 35
+   "registered": 35,
+   "map_url": "https://www.openstreetmap.org/"
   }
  ],
  "albums": [
@@ -365,7 +368,13 @@ window.DEMO = {
   }
  ],
  "top": [
-  {"name":"سارا نوری","avatar":"","heyat":"","kanoon":"","rank":""},
+  {
+   "name": "سارا نوری",
+   "avatar": "",
+   "heyat": "",
+   "kanoon": "",
+   "rank": ""
+  },
   {
    "name": "علی رضایی",
    "avatar": "uploads/a1.jpg",
@@ -393,6 +402,26 @@ window.DEMO = {
    "heyat": "",
    "kanoon": "",
    "rank": ""
+  }
+ ],
+ "testimonials": [
+  {
+   "name": "امیرحسین ک.",
+   "role": "شرکت‌کننده‌ی اردوی مشهد",
+   "body": "اردو فوق‌العاده بود؛ هم چیز یاد گرفتم هم دوستان خوبی پیدا کردم.",
+   "rating": 5
+  },
+  {
+   "name": "مریم ص.",
+   "role": "شرکت‌کننده‌ی اردوی تهران",
+   "body": "برنامه‌ریزی عالی و مربی‌های دلسوز. حتماً دوباره شرکت می‌کنم.",
+   "rating": 5
+  },
+  {
+   "name": "رضا ن.",
+   "role": "والد",
+   "body": "خیالمان از سازماندهی کانون راحت بود و بچه‌ها خیلی لذت بردند.",
+   "rating": 4
   }
  ]
 };

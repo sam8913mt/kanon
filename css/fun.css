@@ -140,3 +140,74 @@ main>section+section::before{content:"";position:absolute;top:0;inset-inline:10%
 .brand img{animation:wobble 7s ease-in-out infinite}
 nav a{animation:fadeIn .6s both}nav a:nth-child(2){animation-delay:.08s}nav a:nth-child(3){animation-delay:.16s}nav a:nth-child(4){animation-delay:.24s}nav a:nth-child(5){animation-delay:.32s}nav a:nth-child(6){animation-delay:.4s}
 .top-card h3{animation:breathe 5s ease-in-out infinite}
+
+/* ───── v3: آیکن‌ها، موج، اسکلتون، لودینگ، نوار پایین، دکمه‌ی شناور، لایت‌باکس، تم روشن ───── */
+:root{--g1:linear-gradient(135deg,#8E4057,#7B5CFF);--g2:linear-gradient(135deg,#e0892b,#8E4057);--g3:linear-gradient(135deg,#14795a,#2f5bc0)}
+main>section:nth-of-type(4n+2){--acc:#2f5bc0}main>section:nth-of-type(4n+3){--acc:#b86408}main>section:nth-of-type(4n){--acc:#14795a}
+[data-theme=dark] main>section:nth-of-type(4n+1){--acc:#e08aa4}[data-theme=dark] main>section:nth-of-type(4n+2){--acc:#7da2ff}[data-theme=dark] main>section:nth-of-type(4n+3){--acc:#ffb347}[data-theme=dark] main>section:nth-of-type(4n){--acc:#4fd1a5}
+.ic{width:1.15em;height:1.15em;vertical-align:-.18em;flex:none;color:var(--acc,var(--plum))}
+h2 .ic{width:1.1em;height:1.1em;margin-inline-end:4px;-webkit-text-fill-color:initial}
+.btn .ic{color:inherit}
+/* موج بالای بخش‌های زوج */
+main>section:nth-of-type(even)::after{content:"";position:absolute;top:-25px;inset-inline:0;height:26px;background:var(--soft);border-radius:50% 50% 0 0/100% 100% 0 0;pointer-events:none}
+/* پس‌زمینه‌ی تم روشن */
+body{background:radial-gradient(800px 420px at 90% -5%,rgba(123,92,255,.10),transparent),radial-gradient(700px 400px at 0 35%,rgba(255,138,76,.08),transparent),var(--bg)}
+/* اسکلتون */
+@keyframes shimmerS{to{background-position:-200% 0}}
+.skel-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.skel{height:230px;border-radius:24px;background:linear-gradient(100deg,var(--soft) 30%,var(--line) 50%,var(--soft) 70%);background-size:200% 100%;animation:shimmerS 1.3s linear infinite}
+/* لودینگ */
+#ld{position:fixed;inset:0;z-index:300;background:var(--bg);display:grid;place-items:center;transition:opacity .6s,visibility .6s}
+#ld.done{opacity:0;visibility:hidden}
+#ld img{grid-area:1/1;animation:breathe 1.6s ease-in-out infinite}
+#ld i{grid-area:1/1;width:110px;height:110px;border-radius:50%;border:4px solid transparent;border-top-color:var(--plum);border-bottom-color:#7B5CFF;animation:spin 1s linear infinite}
+/* نوار پایین موبایل و دکمه‌ی شناور */
+.bnav{display:none}
+.fab{position:fixed;inset-inline-start:20px;bottom:20px;z-index:40;opacity:0;transform:translateY(24px) scale(.9);pointer-events:none;transition:opacity .4s,transform .4s;box-shadow:0 10px 30px rgba(142,64,87,.4);border-radius:999px;padding:12px 20px}
+.fab.show{opacity:1;transform:none;pointer-events:auto;animation:pulseGlow 2.4s infinite}
+@media (max-width:760px){
+  .fab{display:none}
+  body{padding-bottom:92px}
+  .bnav{position:fixed;inset-inline:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;align-items:flex-end;justify-content:space-around;z-index:40;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:6px;animation:riseIn .6s .4s both}
+  .bnav a{flex:1;display:grid;justify-items:center;gap:2px;font-size:11px;color:var(--muted);padding:6px 0;border-radius:16px;text-decoration:none}
+  .bnav a .ic{color:currentColor;width:22px;height:22px}
+  .bnav a[aria-current]{color:var(--plum);background:var(--soft)}
+  .bnav .go{flex:none;width:58px;height:58px;margin-top:-30px;border-radius:50%;background:var(--g1);color:#fff;align-content:center;box-shadow:0 8px 20px rgba(123,92,255,.5);animation:pulseGlow 2.4s infinite}
+  .bnav .go span{font-size:10px}
+}
+/* لایت‌باکس */
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+@keyframes lbZoom{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+.lb{animation:lbIn .3s ease both}
+.lb-stage img,.lb-stage .lb-vid{animation:lbZoom .45s cubic-bezier(.2,.9,.3,1.15) both}
+/* نظرات */
+.tm .bd{display:grid;gap:8px}
+.tm .q{width:34px;height:34px;opacity:.8}
+.tm p{margin:0;line-height:1.9}
+.tm .stars .ic{color:#e0a82b;width:18px;height:18px}
+.tm small{color:var(--muted)}
+/* توقف انیمیشن‌های خارج از دید */
+.off,.off *,.off *::before,.off *::after{animation-play-state:paused!important}
+.rv:not(.in){will-change:transform,opacity}
+
+/* ───── v3.1: ظاهر پرجنب‌وجوش‌تر ───── */
+@keyframes marq{to{transform:translateX(50%)}}
+@keyframes fillbar{from{width:0}to{width:var(--w)}}
+@keyframes sheen{0%{background-position:0 0}100%{background-position:-200% 0}}
+.ticker{overflow:hidden;background:linear-gradient(90deg,#243B64,#8E4057,#7B5CFF,#8E4057,#243B64);background-size:200% 100%;animation:gradMove 12s linear infinite;color:#fff;padding:12px 0;border-block:1px solid rgba(255,255,255,.25);transform:rotate(-1deg);margin:-10px -10px 18px;position:relative;z-index:2;box-shadow:0 8px 24px rgba(36,59,100,.25)}
+.tk{display:flex;gap:26px;width:max-content;font-weight:700;font-size:1.05em;animation:marq 28s linear infinite}
+.tk i{color:#ffb347;font-style:normal}
+.prog{height:7px;border-radius:7px;background:var(--line);margin-top:12px;overflow:hidden}
+.prog i{display:block;height:100%;width:var(--w);border-radius:7px;background:linear-gradient(90deg,var(--acc,#8E4057),#ffb347,var(--acc,#8E4057));background-size:200% 100%;animation:fillbar 1.4s ease-out both,sheen 3s linear infinite}
+.cv{position:relative}
+.cv::after{content:"";position:absolute;inset:auto 0 0 0;height:60%;background:linear-gradient(to top,rgba(10,14,30,.45),transparent);pointer-events:none}
+main>section{overflow:visible}
+main>section:nth-of-type(odd):not(#sec-top){background-image:radial-gradient(520px 280px at 92% 0,color-mix(in srgb,var(--acc) 14%,transparent),transparent),radial-gradient(color-mix(in srgb,var(--acc) 16%,transparent) 1.2px,transparent 1.4px);background-size:auto,24px 24px}
+main>section:nth-of-type(even){background-image:radial-gradient(520px 280px at 8% 100%,color-mix(in srgb,var(--acc) 14%,transparent),transparent)}
+h2{font-size:clamp(1.6em,4.2vw,2.1em)}
+footer{background:linear-gradient(180deg,var(--card),color-mix(in srgb,var(--plum) 10%,var(--card)));position:relative}
+footer::before{content:"";position:absolute;top:-1px;inset-inline:0;height:4px;background:linear-gradient(90deg,#8E4057,#7B5CFF,#ffb347,#14795a,#8E4057);background-size:200% 100%;animation:gradMove 6s linear infinite}
+@media (prefers-reduced-motion:reduce){.tk{animation:none}}
+.cd{display:flex;width:fit-content;max-width:100%}
+main{overflow-x:clip}
+.fg img{height:52px;width:auto}

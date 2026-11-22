@@ -1,5 +1,6 @@
 /** home.js — صفحه‌ی اصلی */
 document.addEventListener('DOMContentLoaded', async () => {
+  ['ac', 'c1', 'c2', 'c3', 'al', 'nw'].forEach(i => skel(byId(i)));
   const S = (await siteP()).data || {}, s = S.settings || {};
   byId('t').textContent = s.hero_title || '';
   byId('a').textContent = s.hero_text || '';
@@ -13,6 +14,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   else byId('sec-ac').hidden = true;
 
   const camps = (await api('/camps')).data || [];
+  // شمارنده‌ی معکوس نزدیک‌ترین اردوی پیش‌رو
+  const nx = camps.filter(c => c.start && ['open', 'soon'].includes(c.status) && new Date(c.start) > Date.now()).sort((x, y) => new Date(x.start) - new Date(y.start))[0];
+  if (nx) {
+    const cd = byId('cd'), T = new Date(nx.start).getTime(); cd.hidden = false;
+    const tk = () => { let d = Math.max(0, T - Date.now()) / 1000; const v = [['روز', 86400], ['ساعت', 3600], ['دقیقه', 60], ['ثانیه', 1]].map(([l, k]) => { const n = Math.floor(d / k); d -= n * k; return `<div><b>${n}</b><small>${l}</small></div>`; });
+      cd.innerHTML = `<span>⏳ تا ${esc(nx.title)}</span><div class="cd-n">${v.join('')}</div>`; };
+    tk(); setInterval(tk, 1000);
+  }
   const fill = (g, id) => cardSwiper(byId(id), camps.filter(c => campGroup(c) === g).map(campCard));
   fill('open', 'c1'); fill('upcoming', 'c2'); fill('done', 'c3');
 
@@ -31,9 +40,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // برای هر آلبوم یک بخش با اسلایدر تصاویر
   const hs = (await api('/albums.php?home=1')).data || [];
-  byId('alb-secs').innerHTML = hs.map((a, i) => `<section><div class="wrap"><h2>📷 ${esc(a.title)}</h2><div id="as${i}"></div><p><a class="btn alt" href="${esc(U.album(a.slug))}">مشاهده‌ی آلبوم</a></p></div></section>`).join('');
+  byId('alb-secs').innerHTML = hs.map((a, i) => `<section><div class="wrap"><h2>${ic('album')} ${esc(a.title)}</h2><div id="as${i}"></div><p><a class="btn alt" href="${esc(U.album(a.slug))}">مشاهده‌ی آلبوم</a></p></div></section>`).join('');
   hs.forEach((a, i) => imgSwiper(byId('as' + i), a.images));
   reveal(byId('alb-secs').children);
+
+  const tm = (await api('/testimonials.php')).data || [];
+  if (tm.length) { byId('sec-tm').hidden = false; cardSwiper(byId('tm'), tm.map(t => `<div class="card tm"><div class="bd">${ic('quote', 'q')}<p>${esc(t.body)}</p><div class="stars" aria-label="امتیاز ${+t.rating} از ۵">${ic('star').repeat(Math.max(0, Math.min(5, +t.rating || 5)))}</div><b>${esc(t.name)}</b><small>${esc(t.role || '')}</small></div></div>`), { effect: 'coverflow', auto: 1 }); }
   if ((f.videos || []).length) { byId('sec-fv').hidden = false; renderGallery(byId('fv'), f.videos); }
 
   cardSwiper(byId('nw'), ((await api('/news.php')).data || []).slice(0, 6).map(newsCard), { auto: 1 });

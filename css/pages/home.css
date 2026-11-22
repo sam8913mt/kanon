@@ -43,3 +43,32 @@ h2,.h2{background:linear-gradient(90deg,var(--navy),var(--plum));-webkit-backgro
 .top-av{position:relative}
 .top-av::after{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(var(--plum),var(--navy),#ffb347,var(--plum));-webkit-mask:radial-gradient(circle,transparent 58%,#000 60%);mask:radial-gradient(circle,transparent 58%,#000 60%);animation:spin 6s linear infinite}
 .top-card{background:linear-gradient(160deg,var(--card),color-mix(in srgb,var(--card) 88%,var(--plum)))}
+
+/* ───── ظاهر جذاب‌تر ───── */
+:root{--acc:var(--plum)}
+main>section:nth-of-type(4n+1){--acc:#8E4057}main>section:nth-of-type(4n+2){--acc:#3b6bd6}main>section:nth-of-type(4n+3){--acc:#e0892b}main>section:nth-of-type(4n){--acc:#1fa37a}
+h2::before{background:var(--acc)!important;width:6px;box-shadow:0 0 14px var(--acc)}
+main>section+section::before{background:linear-gradient(90deg,transparent,var(--acc),transparent)!important}
+.sw .card{backdrop-filter:blur(10px);border-radius:24px;box-shadow:0 10px 30px color-mix(in srgb,var(--acc) 18%,transparent)}
+.sw .card::before{background:linear-gradient(90deg,var(--acc),#ffb347,var(--acc));background-size:200% 100%}
+.sw .card h3{color:var(--acc)}
+.cv,.sw .gal-item img{transition:transform 6s ease-out}
+.swiper-slide-active .cv,.swiper-slide-active .gal-item img{transform:scale(1.08)}
+[data-theme=dark] body{background:radial-gradient(900px 500px at 85% -5%,rgba(123,92,255,.18),transparent),radial-gradient(700px 400px at 5% 30%,rgba(255,138,76,.10),transparent),var(--bg)}
+[data-theme=dark] .sw .card,[data-theme=dark] .top-card{border-color:color-mix(in srgb,var(--acc) 45%,var(--line));box-shadow:0 0 28px color-mix(in srgb,var(--acc) 25%,transparent)}
+.cd{margin:18px 0 8px;display:inline-flex;flex-direction:column;gap:8px;padding:12px 16px;border-radius:20px;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.35);color:#fff;animation:popIn .8s both}
+.cd>span{font-weight:700;font-size:.95em}
+.cd-n{display:flex;gap:8px;direction:ltr}
+.cd-n div{min-width:58px;text-align:center;padding:8px 6px;border-radius:14px;background:rgba(0,0,0,.25)}
+.cd-n b{display:block;font-size:1.5em;line-height:1.1;font-variant-numeric:tabular-nums}
+.cd-n small{font-size:.7em;opacity:.85}
+@media (max-width:420px){.cd-n div{min-width:48px}.cd-n b{font-size:1.2em}}
+
+/* اسلایدر کارتی: عرض ثابت هر کارت، شروع از راست، سایه بدون برش */
+.sw{padding:14px 18px 44px;margin-inline:-18px}
+.sw-c .swiper-slide{width:82%}
+@media (min-width:640px){.sw-c .swiper-slide{width:calc(50% - 8px)}}
+@media (min-width:1000px){.sw-c .swiper-slide{width:calc(33.333% - 11px)}}
+.hero{overflow:hidden}
+.sw .card{display:block;overflow:hidden;color:inherit;text-decoration:none}
+.sw .card .cv{height:170px;background-size:cover;background-position:center}

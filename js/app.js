@@ -23,3 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('pointerdown', e => { const t = e.target.closest('.btn,.card,.gal-item'); if (!t) return; const r = t.getBoundingClientRect(), d = Math.max(r.width, r.height) * 1.6, s = document.createElement('span');
     s.className = 'rip'; s.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`; t.appendChild(s); setTimeout(() => s.remove(), 700); }, { passive: true });
 });
+
+/* لودینگ ورود، آیکن‌ها و توقف انیمیشن‌های خارج از دید (سبک‌تر برای موبایل) */
+(() => {
+  if (!document.body) return;
+  document.body.insertAdjacentHTML('afterbegin', `<div id="ld" aria-hidden="true"><i></i><img src="${ASSET}logo.png" alt="" width="64" height="74"></div>`);
+  const off = () => { const l = document.getElementById('ld'); if (!l) return; l.classList.add('done'); setTimeout(() => l.remove(), 700); };
+  if (document.readyState === 'complete') off(); else addEventListener('load', off); setTimeout(off, 4000);
+  document.addEventListener('DOMContentLoaded', () => {
+    iconify();
+    if ('IntersectionObserver' in window) { const o = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('off', !e.isIntersecting)), { rootMargin: '120px' }); document.querySelectorAll('main>section,.hero').forEach(x => o.observe(x)); }
+  });
+})();

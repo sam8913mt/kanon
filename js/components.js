@@ -57,6 +57,7 @@ async function layout() {
   };
   byId('th').onclick = toggleTheme;
   cleanStaticLinks();
+  chrome();
   if (!CFG.DEMO_MODE) {
     const [mr, sr] = await Promise.all([api('/member.php'), api('/me.php')]);
     const mm = mr.data?.member;
@@ -94,7 +95,8 @@ function campCard(c) {
   return `<a class="card hov" href="${esc(U.camp(c.slug))}">
     <div class="cv"${coverStyle(c.cover)}></div>
     <div class="bd">${tag(c.status)}<h3>${esc(c.title)}</h3>
-    <small>${esc(c.location || '')}${c.start ? ' • ' + esc(fmtDate(c.start)) : ''}${c.capacity ? ' • ظرفیت ' + esc(c.capacity) : ''}${left !== null && c.status === 'open' ? ' • ' + left + ' جای خالی' : ''}</small></div></a>`;
+    <small>${esc(c.location || '')}${c.start ? ' • ' + esc(fmtDate(c.start)) : ''}${c.capacity ? ' • ظرفیت ' + esc(c.capacity) : ''}${left !== null && c.status === 'open' ? ' • ' + left + ' جای خالی' : ''}</small>
+    ${c.capacity > 0 && c.registered != null ? `<div class="prog" role="img" aria-label="${Math.round(100 * c.registered / c.capacity)}٪ ظرفیت پر شده"><i style="--w:${Math.min(100, Math.round(100 * c.registered / c.capacity))}%"></i></div>` : ''}</div></a>`;
 }
 
 const albumCard = a => `<a class="card hov" href="${esc(U.album(a.slug))}"><div class="cv"${coverStyle(a.cover)}></div><div class="bd"><h3>${esc(a.title)}</h3><small>${esc(fmtDate(a.date))}</small></div></a>`;
@@ -235,8 +237,8 @@ function renderFiles(el, files) {
 /* ───────────── Swiper (فایل‌های محلی: js/vendor/swiper-bundle.min.js و css/vendor/swiper-bundle.min.css) ───────────── */
 const RM = () => matchMedia('(prefers-reduced-motion:reduce)').matches;
 /** ساخت اسلایدر داخل el از آرایه‌ی HTML اسلایدها؛ بدون Swiper به اسکرول افقی ساده تبدیل می‌شود */
-function mkSwiper(el, slides, opt) {
-  el.className = 'swiper sw';
+function mkSwiper(el, slides, opt, cls = '') {
+  el.className = 'swiper sw ' + cls;
   el.setAttribute('dir', 'rtl');
   el.innerHTML = `<div class="swiper-wrapper">${slides.map(h => `<div class="swiper-slide">${h}</div>`).join('')}</div><div class="swiper-pagination"></div>`;
   if (!window.Swiper) { el.classList.add('sw-fb'); return null; }
@@ -247,7 +249,7 @@ function mkSwiper(el, slides, opt) {
 function imgSwiper(el, media) {
   const M = media || [];
   const sw = mkSwiper(el, M.map((m, k) => `<button type="button" class="gal-item" data-k="${k}" aria-label="${esc(m.title || 'مشاهده‌ی تصویر')}"><img loading="lazy" decoding="async" width="400" height="300" alt="${esc(m.title || '')}" src="${esc(upl(m.path || m.src || ''))}"></button>`), {
-    slidesPerView: 1.15, spaceBetween: 12, centeredSlides: M.length > 2, loop: M.length > 4,
+    slidesPerView: 1.15, spaceBetween: 12, rewind: true,
     autoplay: RM() || M.length < 2 ? false : { delay: 3500, disableOnInteraction: false },
     breakpoints: { 640: { slidesPerView: 2.2 }, 1000: { slidesPerView: 3.2 } },
   });
@@ -270,10 +272,9 @@ function topSwiper(el, people) {
 /** اسلایدر کارتی برای فهرست‌ها (فعالیت‌ها، اردوها، آلبوم‌ها، اخبار، کانال‌ها…) */
 function cardSwiper(el, items, o = {}) {
   if (!items.length) { el.className = ''; el.innerHTML = '<p class="muted">موردی ثبت نشده است.</p>'; return null; }
-  const fx = o.effect === 'coverflow' ? { effect: 'coverflow', centeredSlides: true, coverflowEffect: { rotate: 16, stretch: 0, depth: 80, modifier: 1, slideShadows: false } } : {};
-  return mkSwiper(el, items, { slidesPerView: 1.15, spaceBetween: 14, centerInsufficientSlides: true, watchOverflow: true,
-    autoplay: o.auto && !RM() && items.length > 3 ? { delay: 4500, disableOnInteraction: true } : false,
-    breakpoints: { 640: { slidesPerView: 2.1 }, 1000: { slidesPerView: 3 } }, ...fx });
+  const fx = o.effect === 'coverflow' && items.length >= 4 ? { effect: 'coverflow', centeredSlides: true, coverflowEffect: { rotate: 14, stretch: 0, depth: 70, modifier: 1, slideShadows: false } } : {};
+  return mkSwiper(el, items, { slidesPerView: 'auto', spaceBetween: 16, watchOverflow: true,
+    autoplay: o.auto && !RM() && items.length > 3 ? { delay: 4500, disableOnInteraction: true } : false, ...fx }, 'sw-c');
 }
 /** شمارش تدریجی عددها */
 function countUp(el) {
@@ -281,4 +282,19 @@ function countUp(el) {
   if (!n || RM()) return;
   const t0 = performance.now(), d = 1400;
   (function f(t) { const k = Math.min(1, (t - t0) / d); el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(f); })(t0);
+}
+
+/* ───────────── آیکن SVG، اسکلتون، نوار پایین، دکمه‌ی شناور ───────────── */
+const ic = (n, cls = '') => `<svg class="ic ${cls}" aria-hidden="true"><use href="${ASSET}icons.svg#${n}"/></svg>`;
+const iconify = root => (root || document).querySelectorAll('[data-ic]').forEach(e => { e.outerHTML = ic(e.dataset.ic); });
+const skel = (el, n = 3) => { el.className = 'skel-row'; el.innerHTML = '<div class="skel"></div>'.repeat(n); };
+function chrome() {
+  if (/signup|login|register|complete-profile/.test(location.pathname)) return;
+  const here = location.pathname.replace(/\/$/, '') || '/';
+  const it = (n, l, h, c = '') => `<a class="${c}" href="${esc(h)}"${new URL(h, location.href).pathname.replace(/\/$/, '') === here ? ' aria-current="page"' : ''}>${ic(n)}<span>${l}</span></a>`;
+  document.body.insertAdjacentHTML('beforeend', `<div class="bnav" role="navigation" aria-label="منوی سریع">${it('home', 'خانه', U.home())}${it('camp', 'اردوها', U.nav('/camps'))}${it('plus', 'ثبت‌نام', U.signup(), 'go')}${it('album', 'آلبوم‌ها', U.nav('/albums'))}${it('news', 'اخبار', U.nav('/news'))}</div>
+    <a class="btn cta fab" href="${esc(U.signup())}">${ic('sparkle')} ثبت‌نام</a>`);
+  const fab = document.querySelector('.fab');
+  const t = () => fab.classList.toggle('show', scrollY > 500);
+  addEventListener('scroll', t, { passive: true }); t();
 }

@@ -86,11 +86,11 @@ VIEWS.__top = async (q = '') => {
   if (!r.success) { $('#c').innerHTML = `<p class="err">${esc(r.message)}</p>`; return; }
   const { top, candidates } = r.data;
   const av = x => x.avatar_id ? `<img src="/api/profile/file.php?id=${x.avatar_id}" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover">` : '<span class="pv-av" style="width:36px;height:36px;font-size:15px">' + esc((x.name || '؟').slice(0, 1)) + '</span>';
-  const info = x => `<div style="flex:1;min-width:0"><b>${esc(x.name)}</b><div class="hint">هیئت: ${esc(x.heyat) || '—'} · کانون: ${esc(x.kanoon) || '—'} · مرتبه: ${esc(x.rank) || '—'}</div></div>`;
+  const info = x => `<div style="flex:1;min-width:0"><b>${esc(x.name)}</b><div class="hint">هیئت: ${esc(x.heyat) || '—'} · مرتبه: ${esc(x.kanoon) || '—'}</div></div>`;
   $('#c').innerHTML = `<p><a class="btn alt sm" href="#profiles">← بازگشت به فهرست</a></p>
     <h3>افراد برتر نمایش‌داده‌شده در صفحه‌ی اصلی</h3>
     <div id="tl">${top.map((x, i) => `<div class="row" style="gap:8px;margin:6px 0;align-items:center" data-id="${x.id}">${av(x)}${info(x)}
-      <button class="btn alt sm" data-rk="${x.id}" type="button">مرتبه</button><button class="btn alt sm" data-mv="${x.id}:-1" type="button" aria-label="بالا">↑</button><button class="btn alt sm" data-mv="${x.id}:1" type="button" aria-label="پایین">↓</button><button class="btn alt sm dng" data-rm="${x.id}" type="button">حذف</button></div>`).join('') || '<p class="hint">هنوز کسی انتخاب نشده است.</p>'}</div>
+      <button class="btn alt sm" data-mv="${x.id}:-1" type="button" aria-label="بالا">↑</button><button class="btn alt sm" data-mv="${x.id}:1" type="button" aria-label="پایین">↓</button><button class="btn alt sm dng" data-rm="${x.id}" type="button">حذف</button></div>`).join('') || '<p class="hint">هنوز کسی انتخاب نشده است.</p>'}</div>
     <h3>افزودن فرد برتر</h3>
     <form class="row" id="tq" style="gap:8px"><input id="tqi" placeholder="جست‌وجوی نام" value="${esc(q)}"><button class="btn sm">جست‌وجو</button></form>
     <div id="tc">${candidates.map(x => `<div class="row" style="gap:8px;margin:6px 0;align-items:center">${av(x)}${info(x)}<button class="btn sm" data-add="${x.id}" type="button">+ افزودن</button></div>`).join('') || '<p class="hint">موردی یافت نشد.</p>'}</div>`;
@@ -102,7 +102,6 @@ VIEWS.__top = async (q = '') => {
     const m = (op, id, data) => call('profile/manage.php', { member_id: +id, section: 'member', op, data });
     if (d.add) { if (report(await m('set_top', d.add, { is_top: 1 }))) again(); }
     else if (d.rm) { if (report(await m('set_top', d.rm, { is_top: 0 }))) again(); }
-    else if (d.rk) { const cur = top.find(x => x.id == d.rk); const v = prompt('مرتبه (خالی = حذف):', cur ? cur.rank : ''); if (v !== null && report(await m('set_rank', d.rk, { rank: v }))) again(); }
     else if (d.mv) { const [id, dir] = d.mv.split(':'); if (report(await call('profile/top.php', { op: 'reorder', ids: moveId(top.map(x => x.id), +id, +dir) }))) again(); }
   };
 };

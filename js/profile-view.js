@@ -102,9 +102,9 @@
     const mode = o.mode, self = mode === 'self', editor = mode === 'editor';
     let admin = mode === 'admin', visitor = false; // admin = دسترسی کامل؛ visitor = مدیر در پروفایل دیگران (فقط مسئولیت و مرتبه)
     const TABS = [['personal', 'اطلاعات شخصی'], ['education', 'تحصیلی'], ['camps', 'اردوها و ثبت‌نام‌ها'], ['activities', 'فعالیت‌ها'], ['responsibilities', 'مسئولیت‌ها'],
-      ['courses', 'دوره‌ها'], ['achievements', 'دستاوردها'], ['documents', 'مدارک'], ['images', 'تصاویر'], ['notifications', 'اعلان‌ها'], ['timeline', 'Timeline'],
+      ['courses', 'دوره‌های گذرانده‌شده'], ['interests', 'علایق'], ['achievements', 'دستاوردها'], ['documents', 'مدارک'], ['images', 'تصاویر'], ['notifications', 'اعلان‌ها'], ['timeline', 'Timeline'],
       ['history', 'سوابق فعالیت'], ['security', 'امنیت حساب']];
-    const tabsFor = () => TABS.filter(t => editor ? ['personal', 'education', 'camps'].includes(t[0]) : !visitor || ['personal', 'education', 'camps', 'responsibilities'].includes(t[0]));
+    const tabsFor = () => TABS.filter(t => editor ? ['personal', 'education', 'camps'].includes(t[0]) : !visitor || t[0] !== 'security');
     const SEC = { camps: 'registrations' };
     const sec = k => SEC[k] || k;
 
@@ -211,6 +211,7 @@
         return x;
       });
       if (!only || only.includes('bio')) { fields.push({ n: 'bio', l: 'درباره من', t: 'area', max: 1000 }); v.bio = S.main.bio || ''; }
+      if (only && only.includes('interests')) { fields.push({ n: 'interests', l: 'علایق (مثلاً ورزش، برنامه‌نویسی، کتاب…)', t: 'area', max: 500 }); v.interests = S.main.interests || ''; }
       if (self && fl.some(f => f.key === 'mobile')) fields.push({ n: 'current_password', l: 'گذرواژه‌ی فعلی (فقط هنگام تغییر موبایل)', t: 'password' });
       formModal('ویرایش اطلاعات', fields, v, async ({ data }, close, err) => {
         const r = await o.act('personal', 'save', { data });
@@ -224,7 +225,7 @@
       const box = root.querySelector('#pvp'); if (!box) return;
       const tab = S.tab;
       try {
-        const d = (tab === 'personal' || tab === 'education') ? S.main : await load(sec(tab));
+        const d = (tab === 'personal' || tab === 'education' || tab === 'interests') ? S.main : await load(sec(tab));
         if (tab !== S.tab) return;
         box.innerHTML = R[tab](d);
         bindPanel(box, d);
@@ -244,6 +245,9 @@
           + (d.bio ? `<h3 class="pv-sub">درباره من</h3><p style="white-space:pre-wrap">${E(d.bio)}</p>` : '')
           + (miss > 0 && (self || admin) ? `<p class="pv-warn">${miss.toLocaleString('fa-IR')} مورد از اطلاعات هنوز تکمیل نشده است.</p>` : '')
           + (editor ? '<p class="pv-warn">اطلاعات حساس برای نقش ویرایشگر پنهان یا Mask شده است.</p>' : '');
+      },
+      interests(d) {
+        return bar('علایق', (self || admin) ? '<button class="btn sm" data-a="editi" type="button">ویرایش</button>' : '') + (d.interests ? `<p style="white-space:pre-wrap">${E(d.interests)}</p>` : empty('علایقی ثبت نشده است'));
       },
       education(d) {
         const cur = d.education.current, hist = d.education.history;
@@ -358,6 +362,7 @@
             async ({ data }, close, err) => { const r = await o.act('registrations', 'claim', { data }); if (!r.success) return err(r.message); toast(r.message); close(); reload(); });
         }
         if (a === 'editp') return editPersonal();
+        if (a === 'editi') return editPersonal(['interests']);
         if (a === 'neweducation') return editPersonal(['school', 'grade', 'field_of_study']);
         if (a === 'add') return openForm(S.tab === 'camps' ? 'camps' : S.tab, 0, { body: b.dataset.body });
         if (a === 'edit') return openForm(s, id);
