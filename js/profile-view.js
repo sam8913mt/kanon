@@ -104,7 +104,7 @@
     const TABS = [['personal', 'اطلاعات شخصی'], ['education', 'تحصیلی'], ['camps', 'اردوها و ثبت‌نام‌ها'], ['activities', 'فعالیت‌ها'], ['responsibilities', 'مسئولیت‌ها'],
       ['courses', 'دوره‌های گذرانده‌شده'], ['interests', 'علایق'], ['achievements', 'دستاوردها'], ['documents', 'مدارک'], ['images', 'تصاویر'], ['notifications', 'اعلان‌ها'], ['timeline', 'Timeline'],
       ['history', 'سوابق فعالیت'], ['security', 'امنیت حساب']];
-    const tabsFor = () => TABS.filter(t => editor ? ['personal', 'education', 'camps'].includes(t[0]) : !visitor || t[0] !== 'security');
+    const tabsFor = () => TABS.filter(t => editor ? ['personal', 'education', 'camps'].includes(t[0]) : true);
     const SEC = { camps: 'registrations' };
     const sec = k => SEC[k] || k;
 
@@ -148,7 +148,8 @@
       const av = h.avatar_id ? `<img src="${E(o.fileUrl(h.avatar_id))}" alt="">` : E((h.first_name || '؟').slice(0, 1));
       const resp = (h.responsibilities || []).map(r => `<span class="pv-chip ${r.body === 'kanoon' ? 'k' : 'h'}">${E(r.title)} — ${E(r.body_label)}</span>`).join('');
       const SL = { stats: [['camps', 'اردوها'], ['attended', 'اردوهای شرکت‌کرده'], ['registrations', 'ثبت‌نام‌ها'], ['activities', 'فعالیت‌ها'], ['responsibilities', 'مسئولیت‌ها'], ['courses', 'دوره‌ها'], ['achievements', 'دستاوردها']] };
-      root.innerHTML = `<div class="pv">
+      root.innerHTML = `<div class="pv${visitor ? ' pv-visit-mode' : ''}">
+        ${visitor ? '<div class="pv-visit" role="note"><span aria-hidden="true">👁</span><div><b>حالت بازدید</b><small>اطلاعات این پروفایل فقط قابل مشاهده است. تنها «گذرواژه»، «مسئولیت‌ها» و «مرتبه» را می‌توانید تغییر دهید.</small></div></div>' : ''}
         <div class="pv-head"><div class="pv-av">${av}</div>
           <div class="pv-hi"><h1>${E(h.full_name)}</h1>
             <div class="pv-chips"><span class="pv-chip">${E(h.role_title)}</span>${badge(h.status, h.status_label)}${h.member_rank ? `<span class="pv-chip">مرتبه: ${E(h.member_rank)}</span>` : ''}${resp}</div>
@@ -167,7 +168,7 @@
     function headActs() {
       const h = S.main.header, b = (a, l, c = 'alt') => `<button class="btn ${c} sm" data-h="${a}" type="button">${l}</button>`;
       if (self) return b('avatar', 'تغییر عکس') + (h.avatar_id ? b('rmavatar', 'حذف عکس') : '') + b('edit', 'ویرایش اطلاعات', '');
-      if (visitor) return '<span class="pv-chip">بازدیدکننده</span>' + b('rank', 'ثبت/تغییر مرتبه', '');
+      if (visitor) return b('rank', 'ثبت/تغییر مرتبه', '');
       if (!admin) return '';
       return b('rank', 'مرتبه') + b('edit', 'ویرایش', '') + b('avatar', 'عکس') + b('message', 'ارسال پیام') + b('status', h.status === 'suspended' ? 'فعال‌سازی حساب' : 'تعلیق حساب') +
         b('staff', 'حساب پنل') + (h.status === 'archived' ? b('restore', 'بازگردانی') : b('archive', 'بایگانی', 'dng'));
@@ -318,7 +319,7 @@
           `<dl class="pv-dl"><dt>آخرین ورود</dt><dd>${E(pdt(d.last_login_at)) || '—'}</dd><dt>آخرین فعالیت</dt><dd>${E(pdt(d.last_activity_at)) || '—'}</dd><dt>آخرین تغییر گذرواژه</dt><dd>${E(pdt(d.password_changed_at)) || '—'}</dd></dl>
           <h3 class="pv-sub">نشست‌های فعال</h3>${d.sessions.length ? `<div class="pv-list">${d.sessions.map(s => `<div class="pv-item"><div class="bd"><h3>${E(s.device)} ${s.current ? badge('active', 'این دستگاه') : ''}</h3>
           <p><bdi>${E(s.ip)}</bdi> · شروع: ${E(pdt(s.created_at))} · آخرین فعالیت: ${E(pdt(s.last_seen_at))}</p>${self && !s.current ? `<div class="ac"><button class="btn alt sm" data-a="revoke" data-id="${s.id}" type="button">خروج این نشست</button></div>` : ''}</div></div>`).join('')}</div>` : empty('نشست فعالی نیست')}
-          <div style="margin-top:12px">${self ? '<button class="btn alt sm" data-a="others" type="button">خروج از همه‌ی نشست‌های دیگر</button>' : '<button class="btn alt sm dng" data-a="revokeall" type="button">بستن همه‌ی نشست‌ها</button>'}</div>
+          <div style="margin-top:12px">${self ? '<button class="btn alt sm" data-a="others" type="button">خروج از همه‌ی نشست‌های دیگر</button>' : (visitor ? '' : '<button class="btn alt sm dng" data-a="revokeall" type="button">بستن همه‌ی نشست‌ها</button>')}</div>
           <p class="pv-warn">گذرواژه هیچ‌گاه نمایش داده نمی‌شود.</p>`;
       },
     };

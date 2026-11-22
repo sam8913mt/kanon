@@ -45,7 +45,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   reveal(byId('alb-secs').children);
 
   const tm = (await api('/testimonials.php')).data || [];
-  if (tm.length) { byId('sec-tm').hidden = false; cardSwiper(byId('tm'), tm.map(t => `<div class="card tm"><div class="bd">${ic('quote', 'q')}<p>${esc(t.body)}</p><div class="stars" aria-label="امتیاز ${+t.rating} از ۵">${ic('star').repeat(Math.max(0, Math.min(5, +t.rating || 5)))}</div><b>${esc(t.name)}</b><small>${esc(t.role || '')}</small></div></div>`), { effect: 'coverflow', auto: 1 }); }
+  const tmBox = byId('tm');
+  if (tm.length) cardSwiper(tmBox, tm.map(t => `<div class="card tm"><div class="bd">${ic('quote', 'q')}<p>${esc(t.body)}</p><div class="stars" aria-label="امتیاز ${+t.rating} از ۵">${ic('star').repeat(Math.max(0, Math.min(5, +t.rating || 5)))}</div><b>${esc(t.name)}</b><small>${esc(t.role || '')}</small></div></div>`), { effect: 'coverflow', auto: 1 });
+  else tmBox.innerHTML = '<p class="muted">هنوز نظری ثبت نشده؛ اولین نفر باشید!</p>';
+  tmBox.insertAdjacentHTML('afterend', `<div class="tm-form-wrap"><button class="btn" id="tm-open" type="button" aria-expanded="false">${ic('chat')} ثبت نظر شما</button>
+    <form id="tm-form" class="f tm-form" hidden novalidate>
+      <input name="name" placeholder="نام شما" maxlength="60" required aria-label="نام">
+      <input name="role" placeholder="عنوان (اختیاری؛ مثلاً شرکت‌کننده‌ی اردوی مشهد)" maxlength="100" aria-label="عنوان">
+      <select name="rating" aria-label="امتیاز"><option value="5">★★★★★ عالی</option><option value="4">★★★★ خوب</option><option value="3">★★★ متوسط</option><option value="2">★★ ضعیف</option><option value="1">★ خیلی ضعیف</option></select>
+      <textarea name="body" rows="4" placeholder="نظر شما (حداقل ۱۰ کاراکتر)" maxlength="500" required aria-label="متن نظر"></textarea>
+      <input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">ارسال نظر</button><p class="hint" id="tm-msg" role="status">نظر شما پس از تأیید مدیر نمایش داده می‌شود.</p>
+    </form></div>`);
+  byId('tm-open').onclick = e => { const f = byId('tm-form'); f.hidden = !f.hidden; e.currentTarget.setAttribute('aria-expanded', !f.hidden); };
+  byId('tm-form').onsubmit = async e => {
+    e.preventDefault(); const f = e.currentTarget, m = byId('tm-msg'), btn = f.querySelector('[type=submit]'); btn.disabled = true;
+    const r = await api('/testimonials.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(f))) });
+    btn.disabled = false; m.textContent = r.message || (r.success ? 'ثبت شد' : 'خطا در ارسال'); m.className = 'hint ' + (r.success ? 'okm' : 'badm');
+    if (r.success) { f.reset(); confetti(); }
+  };
   if ((f.videos || []).length) { byId('sec-fv').hidden = false; renderGallery(byId('fv'), f.videos); }
 
   cardSwiper(byId('nw'), ((await api('/news.php')).data || []).slice(0, 6).map(newsCard), { auto: 1 });

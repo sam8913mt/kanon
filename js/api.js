@@ -80,7 +80,7 @@ function demo(path, opt) {
       if (q.get('slug')) { const n = one(D.news, q.get('slug')); return n ? ok(n) : no('خبر پیدا نشد'); }
       return ok(D.news);
     case 'top': return ok(D.top || []);
-    case 'testimonials': return ok(D.testimonials || []);
+    case 'testimonials': return opt && opt.method === 'POST' ? { success: true, message: 'نظر شما ثبت شد و پس از تأیید مدیر نمایش داده می‌شود (نمایشی)' } : ok(D.testimonials || []);
     case 'pages': { const p = one(D.pages, q.get('slug')); return p ? ok(p) : no('صفحه پیدا نشد'); }
     case 'contacts': case 'contact': return ok(D.contacts);
     case 'channels': return ok(D.channels);

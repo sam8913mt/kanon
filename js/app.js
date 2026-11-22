@@ -35,3 +35,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if ('IntersectionObserver' in window) { const o = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('off', !e.isIntersecting)), { rootMargin: '120px' }); document.querySelectorAll('main>section,.hero').forEach(x => o.observe(x)); }
   });
 })();
+
+/** بارش کاغذرنگی (جشن موفقیت) */
+function confetti() {
+  if (RM()) return;
+  const cols = ['#8E4057', '#7B5CFF', '#ffb347', '#1fa37a', '#3b6bd6'], box = document.createElement('div'); box.className = 'confetti'; box.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 40; i++) { const p = document.createElement('i'); p.style.cssText = `left:${Math.random() * 100}%;background:${cols[i % 5]};--dx:${(Math.random() - .5) * 240}px;--r:${Math.random() * 720}deg;animation-delay:${Math.random() * .4}s;animation-duration:${1.6 + Math.random()}s`; box.appendChild(p); }
+  document.body.appendChild(box); setTimeout(() => box.remove(), 3200);
+}
+/** محو نرم صفحه هنگام رفتن به لینک داخلی */
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href]'); if (!a || RM() || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.target || a.hasAttribute('download')) return;
+  const u = new URL(a.href, location.href); if (u.origin !== location.origin || u.pathname === location.pathname || u.hash && u.pathname === location.pathname) return;
+  e.preventDefault(); document.body.classList.add('leaving'); setTimeout(() => { location.href = a.href; }, 260);
+});
+addEventListener('pageshow', () => document.body.classList.remove('leaving'));

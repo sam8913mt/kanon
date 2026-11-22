@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let mode = 'up';
   const set = m => {
     mode = m;
-    byId('nm').hidden = m === 'in';
+    byId('nm').hidden = m === 'in'; byId('fg').hidden = m !== 'in';
     byId('ttl').textContent = m === 'up' ? 'ساخت پروفایل' : 'ورود به پروفایل';
     byId('sb').textContent = m === 'up' ? 'ساخت پروفایل' : 'ورود';
     byId('p').autocomplete = m === 'up' ? 'new-password' : 'current-password';
