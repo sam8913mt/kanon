@@ -261,8 +261,24 @@ function topSwiper(el, people) {
   const row = (l, v) => `<div><dt>${l}</dt><dd>${v ? esc(v) : blank}</dd></div>`;
   const hey = v => v ? row('مسئولیت در هیئت', v) : '';
   return mkSwiper(el, (people || []).map(p => `<article class="top-card"><div class="top-av">${p.avatar ? `<img loading="lazy" decoding="async" alt="${esc(p.name)}" src="${esc(p.avatar)}">` : `<span aria-hidden="true">${esc((p.name || '؟').slice(0, 1))}</span>`}</div>
-    <h3>${esc(p.name)}</h3><dl>${hey(p.heyat)}${row('مرتبه', p.kanoon)}</dl></article>`), {
+    <h3>${esc(p.name)}</h3>${p.heyat || p.kanoon ? `<dl>${hey(p.heyat)}${row('مرتبه', p.kanoon)}</dl>` : ''}</article>`), {
     effect: 'cards', cardsEffect: { slideShadows: false, perSlideOffset: 8, perSlideRotate: 2 },
     autoplay: RM() || (people || []).length < 2 ? false : { delay: 4000, disableOnInteraction: true },
   });
+}
+
+/** اسلایدر کارتی برای فهرست‌ها (فعالیت‌ها، اردوها، آلبوم‌ها، اخبار، کانال‌ها…) */
+function cardSwiper(el, items, o = {}) {
+  if (!items.length) { el.className = ''; el.innerHTML = '<p class="muted">موردی ثبت نشده است.</p>'; return null; }
+  const fx = o.effect === 'coverflow' ? { effect: 'coverflow', centeredSlides: true, coverflowEffect: { rotate: 16, stretch: 0, depth: 80, modifier: 1, slideShadows: false } } : {};
+  return mkSwiper(el, items, { slidesPerView: 1.15, spaceBetween: 14, centerInsufficientSlides: true, watchOverflow: true,
+    autoplay: o.auto && !RM() && items.length > 3 ? { delay: 4500, disableOnInteraction: true } : false,
+    breakpoints: { 640: { slidesPerView: 2.1 }, 1000: { slidesPerView: 3 } }, ...fx });
+}
+/** شمارش تدریجی عددها */
+function countUp(el) {
+  const n = parseInt(String(el.textContent).replace(/[^\d]/g, ''), 10);
+  if (!n || RM()) return;
+  const t0 = performance.now(), d = 1400;
+  (function f(t) { const k = Math.min(1, (t - t0) / d); el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(f); })(t0);
 }

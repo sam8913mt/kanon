@@ -27,3 +27,19 @@
 .top-card dt{font-size:12px;color:var(--muted)}
 .top-card dd{margin:0;font-weight:700;min-height:1.4em}
 .top-card .blank{display:block;height:0;border-bottom:2px dashed var(--line);margin-top:.9em}
+
+/* ───── زیباسازی صفحه‌ی اصلی ───── */
+html,body{max-width:100%;overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+main>section:nth-of-type(even){background:var(--soft)}
+h2,.h2{background:linear-gradient(90deg,var(--navy),var(--plum));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.sw .swiper-slide{height:auto}
+.sw .card{height:100%;border-radius:20px;border:1px solid var(--line);box-shadow:var(--shadow);background:linear-gradient(180deg,var(--card),color-mix(in srgb,var(--card) 92%,var(--plum)))}
+.sw .card .bd{padding:18px}
+.sw .swiper-pagination-bullet{background:var(--muted);opacity:.35;transition:all .3s}
+.sw .swiper-pagination-bullet-active{opacity:1;width:22px;border-radius:6px;background:linear-gradient(90deg,var(--navy),var(--plum))}
+.sw .gal-item{border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.sw .gal-item img{aspect-ratio:4/3;object-fit:cover;width:100%}
+.top-av{position:relative}
+.top-av::after{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(var(--plum),var(--navy),#ffb347,var(--plum));-webkit-mask:radial-gradient(circle,transparent 58%,#000 60%);mask:radial-gradient(circle,transparent 58%,#000 60%);animation:spin 6s linear infinite}
+.top-card{background:linear-gradient(160deg,var(--card),color-mix(in srgb,var(--card) 88%,var(--plum)))}

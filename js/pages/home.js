@@ -3,20 +3,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const S = (await siteP()).data || {}, s = S.settings || {};
   byId('t').textContent = s.hero_title || '';
   byId('a').textContent = s.hero_text || '';
+  wordsIn(byId('t'));
   byId('s').innerHTML = (S.stats || []).map(x => `<div><b>${esc(x[1])}</b>${esc(x[0])}</div>`).join('');
+  byId('s').querySelectorAll('b').forEach(countUp);
 
   // فعالیت‌ها (از تنظیمات؛ اگر خالی باشد بخش پنهان می‌شود)
   const act = S.activities || [];
-  if (act.length) byId('ac').innerHTML = act.map(x => `<div class="card"><div class="bd"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div></div>`).join('');
+  if (act.length) cardSwiper(byId('ac'), act.map(x => `<div class="card"><div class="bd"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div></div>`), { effect: 'coverflow' });
   else byId('sec-ac').hidden = true;
 
-  const empty = '<p class="muted">موردی ثبت نشده است.</p>';
   const camps = (await api('/camps')).data || [];
-  const fill = (g, id) => { byId(id).innerHTML = camps.filter(c => campGroup(c) === g).map(campCard).join('') || empty; };
+  const fill = (g, id) => cardSwiper(byId(id), camps.filter(c => campGroup(c) === g).map(campCard));
   fill('open', 'c1'); fill('upcoming', 'c2'); fill('done', 'c3');
 
   const albums = ((await api('/albums.php')).data || []).slice(0, 3);
-  byId('al').innerHTML = albums.map(albumCard).join('') || empty;
+  cardSwiper(byId('al'), albums.map(albumCard), { effect: 'coverflow' });
 
   const ab = (await api('/pages.php?slug=about')).data; // معرفی کانون (کوتاه‌شده از صفحه‌ی «درباره»؛ متن پیش‌فرض نصب نمایش داده نمی‌شود)
   const abt = ab && ab.content ? String(ab.content).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() : '';
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   reveal(byId('alb-secs').children);
   if ((f.videos || []).length) { byId('sec-fv').hidden = false; renderGallery(byId('fv'), f.videos); }
 
-  byId('nw').innerHTML = ((await api('/news.php')).data || []).slice(0, 3).map(newsCard).join('') || empty;
-  byId('ch').innerHTML = (S.channels || []).map(x => `<a class="card hov" href="${esc(safeUrl(x.url))}" rel="noopener" target="_blank"><div class="bd"><h3>${esc(x.title)}</h3><small>باز کردن کانال ↗</small></div></a>`).join('') || empty;
-  byId('ct').innerHTML = (S.contacts || []).map(c => `<div class="card"><div class="bd"><b>${esc(c.label)}</b><p>${esc(c.value)}</p></div></div>`).join('') || empty;
+  cardSwiper(byId('nw'), ((await api('/news.php')).data || []).slice(0, 6).map(newsCard), { auto: 1 });
+  cardSwiper(byId('ch'), (S.channels || []).map(x => `<a class="card hov" href="${esc(safeUrl(x.url))}" rel="noopener" target="_blank"><div class="bd"><h3>${esc(x.title)}</h3><small>باز کردن کانال ↗</small></div></a>`));
+  cardSwiper(byId('ct'), (S.contacts || []).map(c => `<div class="card"><div class="bd"><b>${esc(c.label)}</b><p>${esc(c.value)}</p></div></div>`));
 });

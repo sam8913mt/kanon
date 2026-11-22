@@ -81,3 +81,62 @@ footer::before{content:"";position:absolute;inset-inline:0;top:0;height:5px;back
 .btn,.card,.gal-item,.pv-tab{-webkit-tap-highlight-color:transparent}
 .btn:active,.card:active,.gal-item:active{transform:scale(.97)}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ───── انیمیشن‌های بیشتر (مشترک موبایل و دسکتاپ، بدون hover) ───── */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(142,64,87,.45)}70%{box-shadow:0 0 0 14px rgba(142,64,87,0)}}
+@keyframes gradMove{to{background-position:200% 0}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes dropIn{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shine{0%{transform:translateX(-120%) skewX(-20deg)}60%,100%{transform:translateX(220%) skewX(-20deg)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+header{animation:dropIn .7s ease both}
+.hero .logo{animation:floaty 5s ease-in-out infinite}
+.hero .btn:not(.alt){animation:pulseGlow 2.4s infinite}
+.btn{position:relative;overflow:hidden}
+.btn:not(.alt)::after{content:"";position:absolute;inset:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:shine 3.6s ease-in-out infinite;pointer-events:none}
+.band{background-size:200% 100%;animation:gradMove 9s linear infinite alternate}
+.top-av{animation:floaty 4s ease-in-out infinite}
+main>section:nth-of-type(even).rv{transform:translateY(20px) scale(.96)}
+main>section:nth-of-type(even).rv.in{transform:none}
+.rv.in h2::before{transform-origin:top;animation:grow .7s .2s ease both}
+.rv.in h2{animation:popIn .6s ease both}
+.rv.in .swiper-slide{animation:fadeIn .7s ease both}
+.rv.in .swiper-slide:nth-child(2){animation-delay:.1s}.rv.in .swiper-slide:nth-child(3){animation-delay:.2s}.rv.in .swiper-slide:nth-child(4){animation-delay:.3s}
+.hero .deco{animation:floaty 6s ease-in-out infinite}.hero .d2{animation-delay:-1.5s}.hero .d3{animation-delay:-3s}.hero .d4{animation-delay:-4.5s}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ───── روح بیشتر: انیمیشن‌های زنده (بدون hover) ───── */
+@keyframes riseIn{from{opacity:0;transform:translateY(40px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes wordUp{from{opacity:0;transform:translateY(28px) rotate(3deg)}to{opacity:1;transform:none}}
+@keyframes bubUp{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:.7}100%{transform:translateY(-115vh) scale(1.1);opacity:0}}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1.2) rotate(45deg)}}
+@keyframes blob{0%,100%{translate:0 0}33%{translate:60px -40px}66%{translate:-50px 30px}}
+@keyframes wobble{0%,90%,100%{transform:rotate(0)}93%{transform:rotate(-8deg)}96%{transform:rotate(8deg)}}
+@keyframes ripple{from{transform:scale(0);opacity:.45}to{transform:scale(1);opacity:0}}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+#prog{position:fixed;top:0;inset-inline:0;height:4px;z-index:60;transform-origin:right;transform:scaleX(0);background:linear-gradient(90deg,#8E4057,#7B5CFF,#ffb347);pointer-events:none}
+main{animation:pageIn .7s ease both}
+.w{display:inline-block;opacity:0;animation:wordUp .8s var(--d,0ms) cubic-bezier(.2,.9,.3,1.2) both}
+.hero .logo{translate:0 var(--py,0);filter:drop-shadow(0 12px 26px rgba(142,64,87,.4))}
+.hero::before{content:"";position:absolute;width:340px;height:340px;border-radius:50%;inset-inline-end:-80px;top:-60px;background:radial-gradient(circle,rgba(255,179,71,.45),transparent 70%);filter:blur(10px);animation:blob 14s ease-in-out infinite;pointer-events:none}
+.hero .wrap{position:relative;z-index:1}
+.bub{position:absolute;bottom:-40px;width:var(--s);height:var(--s);border-radius:50%;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);animation:bubUp var(--t) linear infinite;pointer-events:none}
+.bub.st{border-radius:0;background:#fff;border:0;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:twinkle 2.6s ease-in-out infinite;bottom:auto;top:calc(var(--s) * 4)}
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);pointer-events:none;animation:ripple .7s ease-out forwards}
+.card{position:relative}
+main>section{position:relative}
+main>section+section::before{content:"";position:absolute;top:0;inset-inline:10%;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--plum),var(--navy),transparent);background-size:200% 100%;animation:gradMove 5s linear infinite;opacity:.55}
+.sw .card::before{content:"";display:block;height:5px;background:linear-gradient(90deg,var(--navy),var(--plum),#ffb347,var(--navy));background-size:200% 100%;animation:gradMove 4s linear infinite}
+.rv.in .swiper-slide{animation:none}
+.rv.in .swiper-slide>*{animation:riseIn .8s cubic-bezier(.2,.9,.3,1.1) both}
+.rv.in .swiper-slide:nth-child(2)>*{animation-delay:.12s}.rv.in .swiper-slide:nth-child(3)>*{animation-delay:.24s}.rv.in .swiper-slide:nth-child(4)>*{animation-delay:.36s}.rv.in .swiper-slide:nth-child(n+5)>*{animation-delay:.48s}
+#s>div{animation:popIn .7s both,floaty 5s ease-in-out infinite}
+#s>div:nth-child(2){animation-delay:.15s,-1s}#s>div:nth-child(3){animation-delay:.3s,-2s}#s>div:nth-child(4){animation-delay:.45s,-3s}
+.band h2{animation:breathe 4s ease-in-out infinite}
+.brand img{animation:wobble 7s ease-in-out infinite}
+nav a{animation:fadeIn .6s both}nav a:nth-child(2){animation-delay:.08s}nav a:nth-child(3){animation-delay:.16s}nav a:nth-child(4){animation-delay:.24s}nav a:nth-child(5){animation-delay:.32s}nav a:nth-child(6){animation-delay:.4s}
+.top-card h3{animation:breathe 5s ease-in-out infinite}
