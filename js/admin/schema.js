@@ -25,8 +25,6 @@ const SCHEMA = {
       T('phone', 'شماره‌ی تماس'), T('deadline', 'مهلت ثبت‌نام', 'date'), T('camp_status', 'وضعیت اردو', 'sel', LBL.camp_status),
       T('registration_status', 'وضعیت ثبت‌نام', 'sel', LBL.registration_status), T('block_duplicates', 'جلوگیری از ثبت‌نام تکراری با کد ملی', 'check'),
       T('photo_required', 'عکس دانش‌آموز الزامی باشد', 'check'), T('map_url', 'لینک نقشه/مسیریابی (نشان، بلد، گوگل‌مپ یا OSM)'), PUB] },
-  testimonials: { t: 'نظرات شرکت‌کنندگان', cols: ['name', 'role', 'rating', 'enabled'],
-    f: [T('name', 'نام'), T('role', 'عنوان (مثلاً شرکت‌کننده‌ی اردوی مشهد)'), T('body', 'متن نظر', 'area'), T('rating', 'امتیاز (۱ تا ۵)', 'number'), T('enabled', 'نمایش داده شود', 'check'), T('sort_order', 'ترتیب', 'number')] },
   albums: { t: 'آلبوم‌ها', cols: ['title', 'slug', 'album_date', 'published'], slugFrom: 'album',
     actions: [['رسانه‌ها', r => { location.hash = '#albums/' + r.id; }]],
     f: [T('title', 'عنوان'), T('slug', 'نامک (انگلیسی)'), T('description', 'توضیح', 'area'), T('album_date', 'تاریخ', 'date'), T('cover', 'کاور', 'img'), PUB] },
@@ -71,6 +69,7 @@ const NAV_GROUPS = [
     ['albums', 'آلبوم‌ها', 'albums'],
     ['images', 'تصاویر', 'media'],
     ['media', 'فایل‌ها (ویدئو و سند)', 'media'],
+    ['testimonials', 'نظرات شرکت‌کنندگان', 'testimonials'],
   ]],
   ['محتوای سایت', [
     ['news', 'اخبار', 'news'],
@@ -81,7 +80,6 @@ const NAV_GROUPS = [
     ['menu', 'منوی سایت', 'menu'],
     ['footer_links', 'فوتر', 'footer'],
     ['channels', 'کانال‌ها', 'channels'],
-    ['testimonials', 'نظرات شرکت‌کنندگان', 'contacts'],
     ['contacts', 'اطلاعات تماس', 'contacts'],
   ]],
   ['تنظیمات', [
