@@ -1,0 +1,56 @@
+/* components.css — دکمه، کارت، تگ، فرم، Gallery و Lightbox */
+.btn{display:inline-block;border:0;border-radius:10px;padding:9px 20px;background:var(--plum);color:#fff;font:inherit;cursor:pointer;text-align:center;transition:.15s}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.alt{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+.btn.block{display:block;width:100%;margin-top:14px}
+.btn.icon{padding:7px 12px}
+.btn.sw{padding:7px 14px;white-space:nowrap}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:5px 16px;font:inherit;cursor:pointer;margin:0 0 8px 6px}
+.chip[aria-pressed=true]{background:var(--navy);color:var(--card);border-color:var(--navy)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.card.hov{transition:.18s}.card.hov:hover{transform:translateY(-3px);border-color:var(--plum)}
+.card .cv{height:160px;background:linear-gradient(120deg,var(--navy),var(--plum)) center/cover}
+.card .bd{padding:16px}.card .bd h3{margin:6px 0}.card .bd p{margin:6px 0;color:var(--muted)}
+
+.tag{display:inline-block;font-size:13px;padding:2px 12px;border-radius:99px;background:var(--muted);color:#fff}
+.tag.open{background:var(--ok)}.tag.soon{background:var(--info)}.tag.full{background:var(--warn)}.tag.done{background:var(--muted)}.tag.cancelled{background:var(--bad)}
+
+label{display:block;margin:12px 0 4px;font-weight:600}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+input[type=checkbox],input[type=radio]{width:auto}
+form.f{max-width:560px;margin:auto;background:var(--card);padding:26px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+fieldset.fs{border:1px solid var(--line);border-radius:10px;margin:12px 0;padding:8px 14px}
+fieldset.fs legend{padding:0 6px;color:var(--navy);font-weight:700}
+.op{display:flex;align-items:center;gap:8px;margin:6px 0;cursor:pointer;font-weight:400}
+.err{color:var(--bad);font-size:14px;min-height:1.2em}.ok{color:var(--ok)}.hint{font-size:13px;color:var(--muted)}
+
+/* Gallery */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.gal-item{position:relative;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;aspect-ratio:4/3;background:linear-gradient(120deg,var(--navy),var(--plum));color:#fff;font:inherit}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block;transition:.25s}
+.gal-item:hover img{transform:scale(1.05)}
+.gal-item small{position:absolute;inset-inline:0;bottom:0;background:#0009;padding:2px 8px}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;background:rgba(8,12,22,.94);z-index:100;display:grid;grid-template-rows:auto 1fr auto;place-items:center;color:#fff}
+.lb-top{justify-self:end;display:flex;gap:6px;padding:10px}
+.lb button{background:#ffffff1f;border:0;color:#fff;border-radius:8px;min-width:40px;height:40px;font:inherit;font-size:18px;cursor:pointer}
+.lb button:hover{background:#ffffff3a}
+.lb-stage{display:grid;place-items:center;overflow:hidden;width:100%;height:100%;min-height:0}
+.lb-img{max-width:92vw;max-height:78vh;object-fit:contain;cursor:zoom-in;transition:transform .12s;touch-action:none;user-select:none}
+.lb.zoomed .lb-img{cursor:grab}
+.lb-n{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:64px;font-size:34px!important}
+.lb-prev{inset-inline-start:10px}.lb-next{inset-inline-end:10px}
+.lb-cap{padding:10px 16px;font-size:14px;opacity:.9}
+.lb-x{background:#8E4057!important}
+
+/* رسانه‌ی ویدئو در گالری و Lightbox + فهرست فایل‌ها */
+.gal-vid{display:grid;place-items:center}
+.gal-play{font-size:2.4rem;line-height:1;opacity:.95}
+.lb-vid{width:min(92vw,1100px);height:min(78vh,620px);border:0;background:#000;border-radius:10px;max-width:92vw}
+.files{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.files li{padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.files small{color:var(--muted,#667)}

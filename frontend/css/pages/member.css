@@ -1,0 +1,12 @@
+/* پروفایل کاربر */
+.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:14px}
+.my-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.p-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.p-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0 0}
+.p-list div{background:var(--soft);border-radius:12px;padding:10px 14px}.p-list dt{font-size:13px;color:var(--muted)}.p-list dd{margin:2px 0 0;font-weight:700;word-break:break-word}
+.p-list .wide{grid-column:1/-1}.p-list .wide dd{font-weight:400;white-space:pre-wrap}
+.p-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0 16px}
+/* تکمیل پروفایل */
+form.f.cp{max-width:720px}
+.cp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0 16px}
+.req{color:var(--bad)}

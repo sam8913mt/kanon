@@ -1,0 +1,48 @@
+/* style.css — توکن‌های طراحی، پایه، چیدمان، Header و Footer
+   پالت اصلی: #F8F9FC (روشن) · #243B64 (Navy) · #8E4057 (Plum) */
+@font-face{font-family:Vazirmatn;src:url(../fonts/Vazirmatn-Variable.woff) format("woff");font-weight:100 900;font-style:normal;font-display:swap}
+:root{
+  --bg:#F8F9FC;--ink:#1b2438;--navy:#243B64;--plum:#8E4057;--card:#fff;--line:#dfe3ee;--muted:#5d6985;
+  --soft:#eef1f8;--shadow:0 6px 24px rgba(36,59,100,.08);
+  --ok:#1e8449;--warn:#b9770e;--bad:#c0392b;--info:#2471a3;
+}
+/* تم تاریک بر پایه‌ی هویت رنگی سایت (نه سیاه خالص) */
+[data-theme=dark]{
+  --bg:#0e1626;--ink:#e8ecf5;--navy:#8fa8d8;--plum:#d18aa0;--card:#17223a;--line:#27365a;--muted:#9aa8c6;
+  --soft:#121d33;--shadow:0 6px 24px rgba(0,0,0,.35);
+  --ok:#58d68d;--warn:#f5b041;--bad:#ec7063;--info:#5dade2;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.9 Vazirmatn,Tahoma,sans-serif}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto}
+:focus-visible{outline:3px solid var(--plum);outline-offset:2px}
+.wrap{max-width:1120px;margin:auto;padding:0 20px}
+section{padding:52px 0}
+h1,h2,h3,h4{line-height:1.5}
+h2,.h2{color:var(--navy);margin:0 0 22px;position:relative;padding-inline-start:14px;font-size:1.5em;font-weight:700}
+h2::before,.h2::before{content:"";position:absolute;inset-inline-start:0;top:.25em;bottom:.25em;width:5px;border-radius:4px;background:var(--plum)}
+.muted{color:var(--muted)}
+.pre{white-space:pre-wrap}
+.skip{position:absolute;inset-inline-start:8px;top:-60px;background:var(--plum);color:#fff;padding:8px 16px;border-radius:8px;z-index:50}
+.skip:focus{top:8px}
+
+/* Header */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:20px;min-height:70px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--navy)}
+.brand img{height:46px;width:auto}
+nav{display:flex;gap:6px;margin-inline-start:auto}
+nav a{color:var(--muted);padding:6px 12px;border-radius:8px;transition:.15s}
+nav a:hover,nav a[aria-current=page]{color:var(--plum);background:var(--soft)}
+#burger{display:none;background:none;border:0;font-size:26px;color:var(--ink);cursor:pointer}
+
+/* Footer */
+footer{background:var(--card);border-top:1px solid var(--line);padding:36px 0 20px;color:var(--muted)}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-bottom:18px}
+.fg h4{color:var(--navy);margin:0 0 8px}
+.fg a,.fg span{display:block}
+footer a:hover{color:var(--plum)}
+.copy{border-top:1px solid var(--line);padding-top:14px;font-size:14px}
+.demo{background:#fff3cd;color:#664d03;text-align:center;font-size:13px;padding:2px}

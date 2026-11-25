@@ -1,0 +1,89 @@
+# ============================================================
+# کانون نخبه‌پروری رویش (royesh) — Apache (cPanel) — آدرس‌های تمیز، امنیت، کش
+# ============================================================
+Options -Indexes
+AddType font/woff .woff
+AddType application/manifest+json .webmanifest
+ErrorDocument 404 /frontend/404.html
+
+# ---------- هدرهای امنیتی ----------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  # CSP صفحات سایت و پنل (API مستثنی است). اگر پس از افزودن ویجت خارجی چیزی بلاک شد، همین خط را موقتاً کامنت کنید.
+  <If "%{REQUEST_URI} !~ m#^/api/#">
+    Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; media-src 'self' https:; frame-src https://www.aparat.com https://www.youtube-nocookie.com https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+  </If>
+</IfModule>
+
+# ---------- کش مرورگر (Performance) ----------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/png  "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType font/woff  "access plus 1 year"
+  ExpiresByType video/mp4  "access plus 30 days"
+  ExpiresByType video/webm "access plus 30 days"
+  ExpiresByType text/css   "access plus 5 minutes"
+  ExpiresByType application/javascript "access plus 5 minutes"
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# ---------- فایل‌های حساس ----------
+<FilesMatch "\.(md|sql|log|ini|sh|bak|dist)$|^\.|composer\.(json|lock)$">
+  Require all denied
+</FilesMatch>
+
+RewriteEngine On
+
+# 0) دامنه‌ی اصلی: حذف www و اجبار https (بعد از فعال‌شدن SSL/AutoSSL در cPanel)
+RewriteCond %{HTTP_HOST} ^www\.nokhbeparvari\.ir$ [NC]
+RewriteRule ^ https://nokhbeparvari.ir%{REQUEST_URI} [R=301,L]
+RewriteCond %{HTTP_HOST} ^nokhbeparvari\.ir$ [NC]
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https [NC]
+RewriteCond %{HTTP:CF-Visitor} !"https" [NC]
+RewriteRule ^ https://nokhbeparvari.ir%{REQUEST_URI} [R=301,L]
+
+# 1) حذف پسوند .html از آدرس (۳۰۱؛ query حفظ می‌شود)
+RewriteCond %{REQUEST_URI} !^/admin/
+RewriteCond %{THE_REQUEST} \s/+(?:[^\s?]*/)?([a-z0-9\-]+)\.html[\s?]
+RewriteRule ^ /%1 [R=301,L]
+
+# 2) جلوگیری از دسترسی مستقیم به /frontend/ (محتوای تکراری)
+RewriteCond %{THE_REQUEST} \s/+frontend/
+RewriteRule ^ - [F]
+
+# 3) API، robots و sitemap پویا
+RewriteRule ^api/(.+)\.php$ backend/api/$1.php [END]
+RewriteRule ^robots\.txt$ backend/api/robots.php [END]
+RewriteRule ^sitemap\.xml$ backend/api/sitemap.php [END]
+RewriteRule ^sw\.js$ frontend/sw.js [END]
+RewriteRule ^manifest\.webmanifest$ frontend/manifest.webmanifest [END]
+
+# 4) مسیرهای خصوصی
+RewriteRule ^(backend|database|docs)/ - [F]
+
+# 5) صفحه‌ها (آدرس تمیز)
+RewriteRule ^admin/?$ frontend/admin/index.html [END]
+RewriteRule ^admin/(.+)$ frontend/admin/$1 [END]
+RewriteRule ^$ frontend/index.html [END]
+RewriteRule ^camp/([\w\-]+)/register/success/?$ frontend/register-success.html [END]
+RewriteRule ^camp/([\w\-]+)/register/?$ frontend/register.html?camp=$1 [END,QSA]
+RewriteRule ^camp/([\w\-]+)/?$ frontend/camp.html?slug=$1 [END,QSA]
+RewriteRule ^album/([\w\-]+)/?$ frontend/album.html?slug=$1 [END,QSA]
+RewriteRule ^page/([\w\-]+)/?$ frontend/page.html?slug=$1 [END,QSA]
+RewriteRule ^news/([\w\-]+)/?$ frontend/article.html?slug=$1 [END,QSA]
+
+# 6) فایل‌های ایستا (حتی با مسیر نسبی در آدرس‌های تو در تو مثل /camp/x/register)
+RewriteRule ^(?:.+/)?(css|js|data|assets|fonts)/(.*)$ frontend/$1/$2 [END]
+RewriteRule ^(?:.+/)uploads/(.*)$ uploads/$1 [END]
+
+# 7) صفحات ساده: /camps /albums /news /contact /channels /about /login ...
+RewriteCond %{DOCUMENT_ROOT}/frontend/$1.html -f
+RewriteRule ^([a-z0-9\-]+)/?$ frontend/$1.html [END]

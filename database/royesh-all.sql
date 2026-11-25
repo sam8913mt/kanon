@@ -12,7 +12,7 @@ CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(60) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
-  role ENUM('admin','editor') NOT NULL DEFAULT 'editor',
+  role ENUM('admin','editor','media') NOT NULL DEFAULT 'editor',
   active TINYINT(1) NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -396,6 +396,64 @@ CREATE TABLE news (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS login_codes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  mobile CHAR(11) NOT NULL,
+  code_hash CHAR(64) NOT NULL,
+  expires_at DATETIME NOT NULL,
+  attempts TINYINT NOT NULL DEFAULT 0,
+  used TINYINT(1) NOT NULL DEFAULT 0,
+  ip VARCHAR(45) NULL,
+  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX (mobile, id),
+  INDEX (ip, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- رسیدهای پرداخت ثبت‌نام (کارت‌به‌کارت) — v3.5.0
+CREATE TABLE IF NOT EXISTS payment_receipts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  registration_id INT NOT NULL,
+  file VARCHAR(255) NOT NULL,
+  status ENUM('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  admin_note VARCHAR(500) NULL,
+  archived TINYINT(1) NOT NULL DEFAULT 0,
+  approved_at DATETIME NULL,
+  ip VARCHAR(45) NULL,
+  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX (registration_id),
+  INDEX (status, created_at),
+  FOREIGN KEY (registration_id) REFERENCES registrations(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT IGNORE INTO settings(k,v) VALUES ('secret_pay_card_number',''),('secret_pay_card_holder','');
+
+-- کتاب‌های خوانده‌شده‌ی اعضا (ثبت توسط مدیر) — v3.5.0
+CREATE TABLE IF NOT EXISTS member_books (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  member_id INT NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  author VARCHAR(150) NULL,
+  read_date DATE NULL,
+  note VARCHAR(500) NULL,
+  created_by INT NULL,
+  deleted_at DATETIME NULL,
+  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX (member_id, read_date),
+  FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS heyats (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  caption TEXT NULL,
+  image VARCHAR(255) NULL,
+  event_date DATE NULL,
+  event_time TIME NULL,
+  occasion VARCHAR(150) NULL,
+  published TINYINT(1) NOT NULL DEFAULT 0,
+  sms_sent_at DATETIME NULL,
+  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE contacts (
   id INT AUTO_INCREMENT PRIMARY KEY,
   label VARCHAR(100),
@@ -476,7 +534,8 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ===================== داده‌ی اولیه (همه از پنل قابل ویرایش‌اند) =====================
 INSERT INTO roles(name,title,description) VALUES
  ('admin','مدیر','دسترسی کامل'),
- ('editor','ویرایشگر','ثبت‌نام‌ها، اردوهای مجاز و فرم آن‌ها، آلبوم و رسانه، مشاهده‌ی محدود (Mask) پروفایل ثبت‌نام‌کنندگان اردوهای مجاز'),
+ ('editor','ویرایشگر','همه‌ی بخش‌ها به‌جز تنظیمات سایت (SEO، صفحات و متن‌ها، منو، فوتر، کانال‌ها، اطلاعات تماس، پیامک و کد ورود، کاربران، لاگ، Backup)'),
+ ('media','مدیر رسانه','آلبوم‌ها، تصاویر، فایل‌ها، هیئت‌ها و ارسال پیامک هیئت'),
  ('member','عضو','کاربر عمومی با پروفایل شخصی');
 
 INSERT INTO responsibility_types(body,title,sort_order) VALUES
@@ -508,8 +567,14 @@ INSERT INTO contacts(label,value,kind,enabled,sort_order) VALUES
  ('نشانی','','address',1,4),('ساعات پاسخگویی','','hours',1,5);
 
 INSERT INTO menu(title,link,sort_order) VALUES
- ('اردوها','/camps',1),('آلبوم‌ها','/albums',2),('اخبار','/news',3),
- ('درباره کانون','/about',4),('کانال‌ها','/channels',5),('تماس','/contact',6);
+ ('اردوها','/camps',1),('هیئت‌ها','/heyats',2),('آلبوم‌ها','/albums',3),('اخبار','/news',4),
+ ('درباره کانون','/about',5),('کانال‌ها','/channels',6),('تماس','/contact',7);
+
+INSERT IGNORE INTO settings(k,v) VALUES
+ ('sms_otp_enabled','0'),('sms_otp_ttl','2'),
+ ('sms_otp_text','کد ورود شما به کانون نخبه‌پروری رویش: {code}'),
+ ('sms_enabled','0'),('sms_sender',''),('secret_sms_apikey',''),
+ ('sms_heyat_text','یادآوری: فردا ساعت {time} هیئت «{title}» ({occasion}) برگزار می‌شود. کانون نخبه‌پروری رویش');
 
 INSERT INTO footer_links(title,link,sort_order) VALUES
  ('درباره کانون','/about',1),('اردوها','/camps',2),('تماس','/contact',3);

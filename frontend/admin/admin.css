@@ -1,0 +1,59 @@
+/* admin.css — پنل مدیریت (سایدبار سمت راست؛ تم روشن/تاریک مبتنی بر توکن‌های style.css) */
+body{display:flex;min-height:100vh}
+aside{width:236px;background:var(--card);border-inline-start:1px solid var(--line);padding:16px;position:sticky;top:0;height:100vh;overflow:auto;order:-1;flex-shrink:0}
+aside .brand{margin-bottom:14px}
+#menu a{display:block;padding:8px 12px;border-radius:8px;color:var(--muted);margin-bottom:2px}
+#menu .grp{font-size:12px;font-weight:700;color:var(--muted);opacity:.8;margin:14px 12px 4px;padding-top:10px;border-top:1px solid var(--line)}
+#menu .grp:first-child{border-top:0;margin-top:2px;padding-top:0}
+#menu a.on,#menu a:hover{background:var(--navy);color:#fff}
+[data-theme=dark] #menu a.on,[data-theme=dark] #menu a:hover{color:#0e1626}
+main{flex:1;min-width:0}
+.bar{display:flex;gap:12px;align-items:center;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--line)}
+.bar b{flex:1;font-size:18px}
+#bg{display:none;background:none;border:0;font-size:22px;color:var(--ink);cursor:pointer}
+.pad{padding:20px}
+table{width:100%;border-collapse:collapse;background:var(--card)}
+th,td{padding:8px;border-bottom:1px solid var(--line);text-align:start;vertical-align:middle}
+th{color:var(--muted);font-weight:600;font-size:14px}
+.tw{overflow-x:auto}
+textarea{min-height:90px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:10px}
+.cards .card{padding:14px}.cards b{font-size:28px;display:block;color:var(--navy)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center}.row>*{width:auto}.row label{margin:0}
+.sm{padding:3px 10px;font-size:13px}
+.acts{white-space:nowrap}.acts .sm{margin:1px}
+form.wide{max-width:720px;margin:0 0 20px}
+.chart{width:100%;max-width:520px}
+progress{width:100%;height:10px}
+.sys{list-style:none;padding:0}.sys li{padding:3px 0}.sys .ok{color:var(--ok)}.sys .warn{color:var(--warn)}.sys .bad{color:var(--bad)}
+.grip{cursor:grab;color:var(--muted);width:20px;user-select:none}
+.dragging{opacity:.4}
+tr[draggable=true]:hover,.frow:hover{background:var(--soft)}
+/* فرم‌ساز */
+.frow{margin:10px 0}.frow .bd{padding:12px}.opts{margin-top:10px;padding-inline-start:26px}
+.olist{list-style:none;margin:6px 0;padding:0}.orow{display:flex;gap:8px;align-items:center;margin:4px 0}.orow input:not([type=checkbox]){flex:1}
+/* آلبوم */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.mitem{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;padding-bottom:6px}
+.mth{position:relative;aspect-ratio:4/3;background:linear-gradient(120deg,var(--navy),var(--plum));display:grid;place-items:center;color:#fff}
+.mth img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;top:6px;inset-inline-start:6px;background:var(--plum);color:#fff;font-size:12px;padding:1px 8px;border-radius:99px}.badge.b2{top:30px;background:var(--navy)}
+.mt{padding:6px 10px;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* جزئیات ثبت‌نام */
+.rd{display:grid;grid-template-columns:200px 1fr;gap:20px}.rphoto{width:200px;height:240px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+.rphoto.none{display:grid;place-items:center;background:var(--soft);color:var(--muted)}
+/* مودال و Toast */
+.modal{position:fixed;inset:0;background:#000b;z-index:30;overflow:auto;padding:20px}.modal .box{max-width:760px;margin:auto;padding:16px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:12px}
+.tile{padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer;background:none}.tile img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+#toast{position:fixed;inset-inline-end:16px;bottom:16px;z-index:50;display:grid;gap:8px}
+.toast{padding:10px 16px;border-radius:10px;color:#fff;box-shadow:var(--shadow)}.toast.ok{background:var(--ok)}.toast.bad{background:var(--bad)}
+@media(max-width:800px){
+  aside{position:fixed;inset-block:0;inset-inline-start:0;z-index:9;transform:translateX(100%);transition:.2s}
+  aside.open{transform:none}#bg{display:block}
+  .rd{grid-template-columns:1fr}.pad{padding:12px}
+}
+@media (max-width:760px){.bar .sw .lbl{display:none}}
+
+.btn.tgreen{background:#1f9d62;color:#fff}.btn.tred{background:#d64545;color:#fff}
+.tcard{margin:10px 0}

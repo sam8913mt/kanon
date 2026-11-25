@@ -1,0 +1,59 @@
+/* enhance.css — استایل ماژول‌های jalali.js و enhance.js (سایت و پنل؛ هماهنگ با تم روشن/تاریک) */
+/* چشم رمز */
+.pw-wrap{position:relative;display:block;width:100%;min-width:0}
+.pw-wrap>input{width:100%;padding-inline-end:46px}
+.pw-eye{position:absolute;top:50%;inset-inline-end:6px;transform:translateY(-50%);width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;
+  border:0;background:transparent;color:var(--muted);border-radius:8px;cursor:pointer;padding:0;margin:0;min-height:0}
+.pw-eye:hover{color:var(--ink);background:var(--soft)}
+.pw-eye:focus-visible{outline:3px solid var(--plum);outline-offset:0}
+.pw-eye svg{display:block}
+/* انتخابگر تاریخ شمسی */
+.jd-in{text-align:center;letter-spacing:.5px;cursor:pointer}
+.jd-pop{position:absolute;z-index:10000;width:290px;max-width:calc(100vw - 16px);background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow),0 12px 40px rgba(0,0,0,.25);padding:10px;font-size:15px}
+.jd-h{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.jd-h select{flex:1;min-width:0;padding:5px 6px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;width:auto}
+.jd-n{width:34px;height:34px;border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;cursor:pointer;font-size:20px;line-height:1;padding:0;min-height:0}
+.jd-n:hover{background:var(--line)}
+.jd-w,.jd-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.jd-w span{color:var(--muted);font-size:13px;padding:4px 0}
+.jd-w span:last-child{color:var(--bad)}
+.jd-d{border:0;background:transparent;color:inherit;border-radius:8px;height:36px;cursor:pointer;font:inherit;padding:0;min-height:0}
+.jd-d:hover{background:var(--soft)}
+.jd-d.fri{color:var(--bad)}
+.jd-d.td{outline:2px solid var(--info);outline-offset:-2px}
+.jd-d.on{background:var(--navy);color:var(--bg);font-weight:700}
+.jd-f{display:flex;justify-content:space-between;margin-top:8px;border-top:1px solid var(--line);padding-top:8px}
+.jd-f button{background:transparent;border:0;color:var(--plum);cursor:pointer;font:inherit;padding:4px 8px;border-radius:8px;min-height:0}
+.jd-f button:hover{background:var(--soft)}
+/* برش عکس پروفایل */
+.crop-modal{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:12px;overflow:auto}
+.crop-box{background:var(--card);color:var(--ink);border-radius:16px;padding:16px;width:min(480px,100%);max-height:100%;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.crop-box h3{margin:0 0 4px}
+.crop-hint{margin:0 0 10px;color:var(--muted);font-size:14px}
+.crop-stage{position:relative;margin:0 auto;overflow:hidden;border-radius:8px;background:#000;user-select:none;-webkit-user-select:none;touch-action:none;max-width:100%}
+.crop-stage img{display:block;max-width:none;pointer-events:none}
+.crop-sel{position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.55);cursor:move;touch-action:none;border-radius:2px}
+.crop-sel::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(255,255,255,.8);pointer-events:none}
+.crop-h{position:absolute;right:3px;bottom:3px;width:22px;height:22px;background:#fff;border:3px solid var(--plum);border-radius:50%;cursor:nwse-resize;touch-action:none}
+.crop-row{display:flex;gap:12px;align-items:center;margin:12px 0}
+.crop-row input[type=range]{flex:1;width:auto;padding:0}
+.crop-row canvas{width:56px;height:56px;border-radius:50%;border:2px solid var(--line);background:var(--soft);flex:none}
+.crop-acts{display:flex;gap:8px;flex-wrap:wrap}
+/* کپی شماره کارت و صفحه‌ی پرداخت */
+.pay-card{max-width:480px;margin:14px auto;padding:20px;border-radius:18px;color:#fff;background:linear-gradient(135deg,#243B64,#8E4057);box-shadow:var(--shadow);position:relative}
+.pay-card .pn{font:700 1.5em/1.4 Vazirmatn,monospace;letter-spacing:2px;direction:ltr;text-align:center;margin:10px 0;word-spacing:6px;user-select:all}
+.pay-card .ph{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.pay-card .btn{background:#fff;color:#243B64;border:0}
+.pay-prev{display:block;max-width:100%;max-height:300px;margin:10px auto;border-radius:12px;border:1px solid var(--line)}
+.pay-st{display:inline-block;padding:2px 12px;border-radius:999px;font-size:.9em;border:1px solid currentColor}
+.pay-st.pending{color:var(--warn)}.pay-st.approved{color:var(--ok)}.pay-st.rejected{color:var(--bad)}
+
+/* دکمه‌ی «پروفایل» در هدر همراه عکس کاربر */
+.btn.prof-cta{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.hd-av{width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.7);flex:none}
+
+/* فرم‌های ورود/ثبت‌نام: دکمه‌ی تمام‌عرض با هاور بزرگ نشود تا از لبه‌ی فرم/هم‌عرضِ فیلدها بیرون نزند */
+.btn.block,.btn.block:hover{max-width:100%}
+.btn.block:hover{transform:translateY(-2px)}
+.tabs{flex-wrap:wrap}
+form.f .pw-wrap{margin:0}

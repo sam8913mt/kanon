@@ -1,0 +1,22 @@
+{
+  "id": "/",
+  "name": "کانون نخبه‌پروری رویش",
+  "short_name": "رویش",
+  "description": "وب‌سایت رسمی کانون نخبه‌پروری رویش؛ اردوهای علمی و آموزشی",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#243B64",
+  "background_color": "#FFFAF2",
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "اردوها", "url": "/camps", "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

@@ -1,0 +1,9 @@
+.hy .cv{height:190px;background-size:cover;background-position:center}
+.hy .tag{background:var(--plum,#8E4057)}
+.hy p{white-space:pre-line}
+.hy .cd-n{display:flex;gap:8px;direction:ltr;margin-top:10px;justify-content:center}
+.hy .cd-n div{min-width:54px;text-align:center;padding:8px 6px;border-radius:14px;background:var(--navy,#243B64);color:#fff}
+.hy .cd-n b{display:block;font-size:1.4em;line-height:1.1;font-variant-numeric:tabular-nums}
+.hy .cd-n small{font-size:.7em;opacity:.85}
+.hy .cd-now{text-align:center;margin-top:10px;font-weight:700;color:var(--ok,#14795a)}
+#ph{margin-top:40px}

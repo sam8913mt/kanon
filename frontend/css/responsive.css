@@ -1,0 +1,19 @@
+/* responsive.css — Mobile / Tablet / Laptop (آخرین فایل CSS بارگذاری‌شده) */
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:1fr}
+  .det{grid-template-columns:1fr}
+  .hero img.logo{width:min(200px,60%)}
+}
+@media (max-width:760px){
+  #burger{display:block;margin-inline-start:auto}
+  nav{display:none;position:absolute;top:70px;inset-inline:0;flex-direction:column;background:var(--card);padding:12px 20px;border-bottom:1px solid var(--line);margin:0}
+  nav.open{display:flex}
+  header .btn.cta{display:none}
+  .btn.sw .lbl{display:none}
+  .btn.sw{padding:7px 10px}
+  section{padding:36px 0}
+  .stats{gap:22px;flex-wrap:wrap}
+  .lb-n{width:38px;height:52px;font-size:26px!important}
+}
+@media (max-width:420px){.gal{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}

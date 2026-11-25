@@ -1,0 +1,18 @@
+# اجرای هر اسکریپتی در uploads ممنوع
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php|phtml|phar|php[0-9]|pl|py|cgi|sh|html?|svg|js)$">
+ Require all denied
+</FilesMatch>
+<IfModule mod_headers.c>
+ Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# اسناد و فایل‌های دانلودی: همیشه دانلود شوند (نه رندر داخل مرورگر) و هیچ اسکریپتی از آن‌ها اجرا نشود
+<IfModule mod_headers.c>
+ <FilesMatch "\.(pdf|docx|xlsx|pptx|txt|zip)$">
+  Header set Content-Disposition "attachment"
+  Header set Content-Security-Policy "default-src 'none'; sandbox"
+ </FilesMatch>
+</IfModule>
+AddType video/mp4 .mp4
+AddType video/webm .webm
